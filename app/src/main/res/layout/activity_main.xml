@@ -36,6 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Welcome Abroad!"
+        android:textColor="@color/black"
         android:textSize="34sp"
         android:textStyle="italic|bold"
         app:layout_constraintEnd_toEndOf="parent"
