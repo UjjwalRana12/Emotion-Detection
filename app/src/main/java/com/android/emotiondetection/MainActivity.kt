@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.face.FaceDetection
@@ -19,16 +20,20 @@ class MainActivity : AppCompatActivity() {
         var button: Button = findViewById(R.id.CameraButton)
 
 
-        val intent =Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-        if(intent.resolveActivity(packageManager)!=null){
 
-            startActivityForResult(intent,123)
+        button.setOnClickListener() {
 
+
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+                if (intent.resolveActivity(packageManager) != null) {
+
+            startActivityForResult(intent, 123)
+
+                 }    else
+            Toast.makeText(this, "something went wrong,toast", Toast.LENGTH_SHORT).show()
         }
-        else
-            Toast.makeText(this,"something went wrong,toast",Toast.LENGTH_SHORT).show()
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -46,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    private fun detectFace(bitmap: Bitmap){
+     private fun detectFace(bitmap: Bitmap){
 
         // High-accuracy landmark detection and face classification
         val options = FaceDetectorOptions.Builder()
@@ -65,16 +70,24 @@ class MainActivity : AppCompatActivity() {
                 var i=1
                 for(face in faces){
                     resultText="face number:$i"+
-                        "\nsmile percentage is :${face.smilingProbability?.times(100)}%"+
-                        "\nleft eye open percentage is :${face.leftEyeOpenProbability?.times(100)}%"+
-                        "\nright eye open percentage is :${face.rightEyeOpenProbability?.times(100)}%"+
+                        "\nsmile percentage is :${face.smilingProbability?.times(100)}%  "+
+                        "\nleft eye open percentage is :${face.leftEyeOpenProbability?.times(100)}%  "+
+                        "\nright eye open percentage is :${face.rightEyeOpenProbability?.times(100)}%  "+
+                        "\nbounding box percentage is :${face.boundingBox}     "+
+                        "\nhead Euler Angle X percentage is :${face.headEulerAngleX?.times(100)}%  "  +
+                        "\nhead Euler Angle Y percentage is :${face.headEulerAngleY?.times(100)}%  "+
+
+
+
                         i++
                 }
                 if(faces.isEmpty()){
                     Toast.makeText(this,"No faces detected",Toast.LENGTH_SHORT).show()
                 }
                 else{
-                    Toast.makeText(this  ,  resultText,  Toast.LENGTH_LONG).show()
+                    val Resultshown:TextView=findViewById(R.id.AiTextView)
+                    Resultshown.text=resultText
+                  //  Toast.makeText(this  ,  resultText,  Toast.LENGTH_LONG).show()
 
                 }
 
